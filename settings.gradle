@@ -1,0 +1,2 @@
+rootProject.name='Sunshine App'
+include ':app'
