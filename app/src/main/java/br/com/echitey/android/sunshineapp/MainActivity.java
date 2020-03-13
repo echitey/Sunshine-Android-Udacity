@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.net.URL;
 
@@ -17,7 +18,7 @@ import br.com.echitey.android.sunshineapp.data.SunshinePreferences;
 import br.com.echitey.android.sunshineapp.utils.NetworkUtils;
 import br.com.echitey.android.sunshineapp.utils.OpenWeatherJsonUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ForecastAdapter.ForecastAdapterOnClickHandler {
 
     private TextView mWeatherTextView;
     private TextView mErrorMessageDisplay;
@@ -68,8 +69,14 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mForecastAdapter = new ForecastAdapter();
+        mForecastAdapter = new ForecastAdapter(this);
         mRecyclerView.setAdapter(mForecastAdapter);
+    }
+
+    @Override
+    public void onClick(String weatherStringData) {
+        Toast.makeText(this, weatherStringData, Toast.LENGTH_SHORT)
+                .show();
     }
 
     // ASYNC TASK TO PERFORM NETWORK REQUEST
