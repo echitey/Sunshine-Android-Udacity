@@ -4,8 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
     private RecyclerView mRecyclerView;
     private ForecastAdapter mForecastAdapter;
 
+    public static final String WEATHER_DATA_KEY = "weather_data_key";
+    private static final String TAG = "Main Activity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +49,33 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
         setUpRecyclerView();
 
         loadWeatherData();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        /* Use the inflater's inflate method to inflate our menu layout to this menu */
+        inflater.inflate(R.menu.main, menu);
+        /* Return true so that the menu is displayed in the Toolbar */
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_refresh) {
+            mForecastAdapter.setWeatherData(null);
+            loadWeatherData();
+            return true;
+        }
+
+        if (id == R.id.action_map) {
+            openLocationInMap();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadWeatherData() {
@@ -73,10 +109,26 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
         mRecyclerView.setAdapter(mForecastAdapter);
     }
 
+    private void openLocationInMap() {
+        String addressString = "1600 Ampitheatre Parkway, CA";
+        Uri geoLocation = Uri.parse("geo:0,0?q=" + addressString);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.d(TAG, "Couldn't call " + geoLocation.toString()
+                    + ", no receiving apps installed!");
+        }
+    }
+
     @Override
     public void onClick(String weatherStringData) {
-        Toast.makeText(this, weatherStringData, Toast.LENGTH_SHORT)
-                .show();
+        Intent intent = new Intent(this, ForecastDetailActivity.class);
+        intent.putExtra(WEATHER_DATA_KEY, weatherStringData);
+        startActivity(intent);
     }
 
     // ASYNC TASK TO PERFORM NETWORK REQUEST
