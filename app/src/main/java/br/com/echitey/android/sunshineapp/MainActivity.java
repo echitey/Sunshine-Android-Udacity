@@ -1,6 +1,8 @@
 package br.com.echitey.android.sunshineapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import java.net.URL;
 
+import br.com.echitey.android.sunshineapp.adapters.ForecastAdapter;
 import br.com.echitey.android.sunshineapp.data.SunshinePreferences;
 import br.com.echitey.android.sunshineapp.utils.NetworkUtils;
 import br.com.echitey.android.sunshineapp.utils.OpenWeatherJsonUtils;
@@ -19,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView mWeatherTextView;
     private TextView mErrorMessageDisplay;
     private ProgressBar mLoadingIndicator;
+    private RecyclerView mRecyclerView;
+    private ForecastAdapter mForecastAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
         mWeatherTextView = findViewById(R.id.tv_weather_data);
         mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+
+        setUpRecyclerView();
 
         loadWeatherData();
     }
@@ -43,14 +52,24 @@ public class MainActivity extends AppCompatActivity {
         /* First, make sure the error is invisible */
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
         /* Then, make sure the weather data is visible */
-        mWeatherTextView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     private void showErrorMessage() {
         /* First, hide the currently visible data */
-        mWeatherTextView.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
         /* Then, show the error */
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
+    }
+
+    private void setUpRecyclerView(){
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+
+        mForecastAdapter = new ForecastAdapter();
+        mRecyclerView.setAdapter(mForecastAdapter);
     }
 
     // ASYNC TASK TO PERFORM NETWORK REQUEST
@@ -93,9 +112,9 @@ public class MainActivity extends AppCompatActivity {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if(weatherData != null){
 
-                for(String weatherString : weatherData){
-                    mWeatherTextView.append((weatherString)+ "\n\n\n");
-                }
+                showWeatherDataView();
+
+                mForecastAdapter.setWeatherData(weatherData);
             } else {
                 showErrorMessage();
             }
