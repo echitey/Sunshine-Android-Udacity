@@ -133,6 +133,20 @@
     <string name="pref_size_key" translatable="false">size_key</string>
     <string name="pref_size_label">Size Multiplier</string>
     <string name="pref_size_default" translatable="false">1</string>
+
+    <string name="pref_temp_key" translatable="false">units</string>
+    <string name="pref_temp_title">Temperature Units</string>
+
+    <string name="pref_temp_celsius_key" translatable="false">metric</string>
+    <string name="pref_temp_far_key" translatable="false">imperial</string>
+
+    <string name="pref_temp_celsius_value">Metric</string>
+    <string name="pref_temp_far_value">Imperial</string>
+
+    <string name="pref_location_use_key">location_key</string>
+    <string name="pref_location_use_value">Location</string>
+    <string name="pref_location_default">Mountain View, CA 94043</string>
+
     <!--NONE-->
 
     <string name="action_refresh">Refresh</string>

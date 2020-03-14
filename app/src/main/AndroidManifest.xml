@@ -11,14 +11,13 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".SettingsActivity"
-            android:parentActivityName=".ForecastDetailActivity">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ForecastDetailActivity" />
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".ForecastDetailActivity"
-            android:launchMode="singleTop"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

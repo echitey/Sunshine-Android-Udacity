@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements
     private static final String TAG = "Main Activity";
     private static final int FORECAST_LOADER_ID = 0;
 
+    private static boolean PREFERENCES_HAVE_BEEN_UPDATED = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,19 @@ public class MainActivity extends AppCompatActivity implements
 
         LoaderManager.getInstance(this).initLoader(FORECAST_LOADER_ID, loaderBundle, this);
 
+        setupSharedPreferences();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (PREFERENCES_HAVE_BEEN_UPDATED) {
+            Log.d(TAG, "onStart: preferences were updated");
+            LoaderManager.getInstance(this).restartLoader(FORECAST_LOADER_ID, null, this);
+            PREFERENCES_HAVE_BEEN_UPDATED = false;
+        }
     }
 
     private void setupSharedPreferences(){
@@ -103,6 +118,12 @@ public class MainActivity extends AppCompatActivity implements
             openLocationInMap();
             return true;
         }
+
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -131,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void openLocationInMap() {
-        String addressString = "1600 Ampitheatre Parkway, CA";
+        String addressString = SunshinePreferences.getPreferredWeatherLocation(this);
         Uri geoLocation = Uri.parse("geo:0,0?q=" + addressString);
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -223,8 +244,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals(getString(R.string.pref_location_key))){
-            // Do Something
-        }
+        PREFERENCES_HAVE_BEEN_UPDATED = true;
     }
 }

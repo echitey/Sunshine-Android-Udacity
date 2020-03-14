@@ -64,11 +64,7 @@ public class ForecastDetailActivity extends AppCompatActivity {
         int id = item.getItemId();
         if(id == android.R.id.home){
             NavUtils.navigateUpFromSameTask(this);
-        }
-
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+            // or onBackPressed();
         }
 
         return super.onOptionsItemSelected(item);

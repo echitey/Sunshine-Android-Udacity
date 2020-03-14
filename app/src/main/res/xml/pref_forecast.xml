@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <CheckBoxPreference
-        android:defaultValue="@bool/pref_show_location_default"
-        android:key="@string/pref_location_key"
-        android:summaryOff="Hidden"
-        android:summaryOn="Shown"
+    <EditTextPreference
+        android:defaultValue="@string/pref_location_default"
+        android:inputType="text"
+        android:key="@string/pref_location_use_key"
+        android:singleLine="true"
         android:title="@string/pref_location_value" />
 
     <ListPreference
-        android:defaultValue="@string/pref_color_blue_key"
-        android:entries="@array/pref_color_option_labels"
-        android:entryValues="@array/pref_color_option_values"
-        android:key="@string/pref_color_list_key"
-        android:title="@string/pref_color_list_title" />
-
-    <EditTextPreference
-        android:defaultValue="@string/pref_size_default"
-        android:key="@string/pref_size_key"
-        android:title="@string/pref_size_label"/>
+        android:defaultValue="@string/pref_temp_key"
+        android:entries="@array/pref_units_options"
+        android:entryValues="@array/pref_units_values"
+        android:key="@string/pref_temp_key"
+        android:title="@string/pref_temp_title" />
 
 </PreferenceScreen>

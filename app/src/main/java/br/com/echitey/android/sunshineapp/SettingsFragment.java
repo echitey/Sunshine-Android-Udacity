@@ -13,8 +13,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements
-        SharedPreferences.OnSharedPreferenceChangeListener,
-        Preference.OnPreferenceChangeListener {
+        SharedPreferences.OnSharedPreferenceChangeListener {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.pref_forecast);
@@ -57,40 +56,18 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onStart() {
+        super.onStart();
+
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
-
-        Preference preference = findPreference(getString(R.string.pref_size_key));
-        preference.setOnPreferenceChangeListener(this);
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
+
         getPreferenceScreen().getSharedPreferences()
                 .unregisterOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        Toast error = Toast.makeText(getContext(), "Please select a number between 0.1 and 3", Toast.LENGTH_SHORT);
-
-        String sizeKey = getString(R.string.pref_size_key);
-        if (preference.getKey().equals(sizeKey)) {
-            String stringSize = (String) newValue;
-            try {
-                float size = Float.parseFloat(stringSize);
-                if (size > 3 || size <= 0) {
-                    error.show();
-                    return false;
-                }
-            } catch (NumberFormatException nfe) {
-                error.show();
-                return false;
-            }
-        }
-        return true;
     }
 }
