@@ -126,4 +126,6 @@
     <string name="action_share">Share</string>
     <string name="action_map">Show On Map</string>
     <string name="action_settings">Settings</string>
+    <string name="pref_location_key">show_location</string>
+    <string name="pref_location_value">Show My Location</string>
 </resources>
