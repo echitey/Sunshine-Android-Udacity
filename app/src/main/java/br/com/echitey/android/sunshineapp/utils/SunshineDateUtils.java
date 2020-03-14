@@ -21,6 +21,7 @@ import android.text.format.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import br.com.echitey.android.sunshineapp.R;
 
@@ -48,19 +49,6 @@ public final class SunshineDateUtils {
         return (date + gmtOffset) / DAY_IN_MILLIS;
     }
 
-    /**
-     * To make it easy to query for the exact date, we normalize all dates that go into
-     * the database to the start of the day in UTC time.
-     *
-     * @param date The UTC date to normalize
-     *
-     * @return The UTC date at 12 midnight
-     */
-    public static long normalizeDate(long date) {
-        // Normalize the start date to the beginning of the (UTC) day in local time
-        long retValNew = date / DAY_IN_MILLIS * DAY_IN_MILLIS;
-        return retValNew;
-    }
 
     /**
      * Since all dates from the database are in UTC, we must convert the given date
@@ -165,6 +153,69 @@ public final class SunshineDateUtils {
 
         return DateUtils.formatDateTime(context, timeInMillis, flags);
     }
+
+    /**
+     * In order to ensure consistent inserts into WeatherProvider, we check that dates have been
+     * normalized before they are inserted. If they are not normalized, we don't want to accept
+     * them, and leave it up to the caller to throw an IllegalArgumentException.
+     *
+     * @param millisSinceEpoch Milliseconds since January 1, 1970 at midnight
+     *
+     * @return true if the date represents the beginning of a day in Unix time, false otherwise
+     */
+    public static boolean isDateNormalized(long millisSinceEpoch) {
+        boolean isDateNormalized = false;
+        if (millisSinceEpoch % DAY_IN_MILLIS == 0) {
+            isDateNormalized = true;
+        }
+
+        return isDateNormalized;
+    }
+
+    /**
+     * This method returns the number of days since the epoch (January 01, 1970, 12:00 Midnight UTC)
+     * in UTC time from the current date.
+     *
+     * @param utcDate A date in milliseconds in UTC time.
+     *
+     * @return The number of days from the epoch to the date argument.
+     */
+    private static long elapsedDaysSinceEpoch(long utcDate) {
+        return TimeUnit.MILLISECONDS.toDays(utcDate);
+    }
+
+    /**
+     * Normalizes a date (in milliseconds).
+     *
+     * Normalize, in our usage within Sunshine means to convert a given date in milliseconds to
+     * the very beginning of the date in UTC time.
+     *
+     *   For example, given the time representing
+     *
+     *     Friday, 9/16/2016, 17:45:15 GMT-4:00 DST (1474062315000)
+     *
+     *   this method would return the number of milliseconds (since the epoch) that represents
+     *
+     *     Friday, 9/16/2016, 00:00:00 GMT (1473984000000)
+     *
+     * To make it easy to query for the exact date, we normalize all dates that go into
+     * the database to the start of the day in UTC time. In order to normalize the date, we take
+     * advantage of simple integer division, noting that any remainder is discarded when dividing
+     * two integers.
+     *
+     *     For example, dividing 7 / 3 (when using integer division) equals 2, not 2.333 repeating
+     *   as you may expect.
+     *
+     * @param date The date (in milliseconds) to normalize
+     *
+     * @return The UTC date at 12 midnight of the date
+     */
+    public static long normalizeDate(long date) {
+        long daysSinceEpoch = elapsedDaysSinceEpoch(date);
+        long millisFromEpochToTodayAtMidnightUtc = daysSinceEpoch * DAY_IN_MILLIS;
+        return millisFromEpochToTodayAtMidnightUtc;
+    }
+
 
     /**
      * Given a day, returns just the name to use for that day.

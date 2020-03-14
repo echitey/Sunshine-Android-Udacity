@@ -101,6 +101,8 @@
 
     <string name="condition_unknown">Unknown (<xliff:g id="conditionId">%1$d</xliff:g>)</string>
 
+    <string name="content_authority">br.com.echitey.android.sunshineapp</string>
+
 
     <!-- - - - - - - - - - - -->
     <!-- Used by NetworkUtils-->
