@@ -116,10 +116,10 @@
     <!--Used by SunshinePreferences-->
     <!-- - - - - - - - - - - - - - -->
     <string name="action_settings">Settings</string>
-    <string name="pref_location_key">show_location</string>
+    <string name="pref_location_key" translatable="false">show_location</string>
     <string name="pref_location_value">Show My Location</string>
 
-    <string name="pref_color_list_key">color_list_key</string>
+    <string name="pref_color_list_key" translatable="false">color_list_key</string>
     <string name="pref_color_list_title">Choose Color</string>
 
     <string name="pref_color_red_key" translatable="false">red</string>
@@ -129,6 +129,10 @@
     <string name="pref_color_red_value">Red</string>
     <string name="pref_color_blue_value">Blue</string>
     <string name="pref_color_green_value">Green</string>
+
+    <string name="pref_size_key" translatable="false">size_key</string>
+    <string name="pref_size_label">Size Multiplier</string>
+    <string name="pref_size_default" translatable="false">1</string>
     <!--NONE-->
 
     <string name="action_refresh">Refresh</string>

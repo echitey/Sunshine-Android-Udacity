@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <CheckBoxPreference
         android:defaultValue="@bool/pref_show_location_default"
         android:key="@string/pref_location_key"
@@ -13,4 +14,10 @@
         android:entryValues="@array/pref_color_option_values"
         android:key="@string/pref_color_list_key"
         android:title="@string/pref_color_list_title" />
+
+    <EditTextPreference
+        android:defaultValue="@string/pref_size_default"
+        android:key="@string/pref_size_key"
+        android:title="@string/pref_size_label"/>
+
 </PreferenceScreen>
