@@ -125,4 +125,5 @@
     </string>
     <string name="action_share">Share</string>
     <string name="action_map">Show On Map</string>
+    <string name="action_settings">Settings</string>
 </resources>
