@@ -6,4 +6,11 @@
         android:summaryOff="Hidden"
         android:summaryOn="Shown"
         android:title="@string/pref_location_value" />
+
+    <ListPreference
+        android:defaultValue="@string/pref_color_blue_key"
+        android:entries="@array/pref_color_option_labels"
+        android:entryValues="@array/pref_color_option_values"
+        android:key="@string/pref_color_list_key"
+        android:title="@string/pref_color_list_title" />
 </PreferenceScreen>
