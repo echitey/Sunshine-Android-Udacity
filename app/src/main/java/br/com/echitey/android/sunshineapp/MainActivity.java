@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements
         ForecastAdapter.ForecastAdapterOnClickHandler,
         LoaderManager.LoaderCallbacks<Cursor>{
 
-    private TextView mWeatherTextView;
     private TextView mErrorMessageDisplay;
     private ProgressBar mLoadingIndicator;
 
@@ -90,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements
 
         FakeDataUtils.insertFakeData(this);
 
-        mWeatherTextView = findViewById(R.id.tv_weather_data);
         mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
 
